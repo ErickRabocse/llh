@@ -52,7 +52,7 @@ const Home = () => {
       >
         Language Learning Hub
       </Typography>
-      <Typography variant="h5" sx={{ textAlign: 'center', mb: 4 }}>
+      <Typography variant="h3" sx={{ textAlign: 'center', mb: 4 }}>
         Welcome
       </Typography>
 
