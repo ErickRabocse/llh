@@ -65,6 +65,17 @@ const RegistrationForm = () => {
         formData
       )
       alert(response.data.message)
+      setFormData({
+        firstName: '',
+        paternalLastName: '',
+        maternalLastName: '',
+        studentID: '',
+        telephone: '',
+        birthDate: '',
+        major: '',
+        studentGroup: '',
+        yearOfEnrollment: '',
+      })
     } catch (error) {
       console.error('Error registering student:', error)
       alert('There was an error registering the student.')
@@ -85,6 +96,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           required
           sx={{ mb: 2 }}
+          autoComplete="off"
         />
         <TextField
           fullWidth
@@ -94,6 +106,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           required
           sx={{ mb: 2 }}
+          autoComplete="off"
         />
         <TextField
           fullWidth
@@ -103,6 +116,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           required
           sx={{ mb: 2 }}
+          autoComplete="off"
         />
         <TextField
           fullWidth
@@ -112,6 +126,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           required
           sx={{ mb: 2 }}
+          autoComplete="off"
         />
         <TextField
           fullWidth
@@ -121,6 +136,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           required
           sx={{ mb: 2 }}
+          autoComplete="off"
         />
         <TextField
           fullWidth
@@ -132,6 +148,7 @@ const RegistrationForm = () => {
           InputLabelProps={{ shrink: true }}
           required
           sx={{ mb: 2 }}
+          autoComplete="off"
         />
 
         {/* Major Selection */}
@@ -181,6 +198,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           required
           sx={{ mb: 2 }}
+          autoComplete="off"
         />
 
         <Button variant="contained" color="primary" fullWidth type="submit">

@@ -39,6 +39,12 @@ const SessionForm = () => {
           returnTime: response.data.returnTime,
           skill: response.data.skill,
         })
+        // ✅ Reset studentID after successful session log
+        setStudentID('')
+        // ✅ Hide session info box after 5 seconds
+        setTimeout(() => {
+          setSessionInfo(null)
+        }, 4000)
       }
     } catch (error) {
       if (error.response && error.response.status === 403) {
@@ -49,6 +55,9 @@ const SessionForm = () => {
           returnTime: error.response.data.returnTime,
           skill: skill,
         })
+        setTimeout(() => {
+          setSessionInfo(null)
+        }, 4000)
       } else {
         setErrorMessage('Error logging session.')
       }
@@ -87,6 +96,7 @@ const SessionForm = () => {
         onChange={(e) => setStudentID(e.target.value)}
         required
         sx={{ mb: 2 }}
+        autoComplete="off"
       />
 
       <Button
