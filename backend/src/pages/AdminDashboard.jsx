@@ -210,7 +210,7 @@ const AdminDashboard = () => {
                 <TableCell>{student.paternalLastName}</TableCell>
                 <TableCell>{student.major}</TableCell>
                 <TableCell>{student.studentGroup}</TableCell>
-                <TableCell>{student.totalSessions || 0}</TableCell>
+                <TableCell>{student.total_sessions || 0}</TableCell>
                 <TableCell>
                   <Button
                     variant="contained"

@@ -81,28 +81,26 @@ app.post('/register', (req, res) => {
 // Route to get all students with their latest skill and skill counts
 app.get('/students', (req, res) => {
   const sql = `
-    SELECT 
-      students.*, 
-      COUNT(sessions.id) AS totalSessions,
-      MAX(sessions.skill) AS lastSkill,
-      SUM(CASE WHEN sessions.skill = 'Use of English' THEN 1 ELSE 0 END) AS useOfEnglish,
-      SUM(CASE WHEN sessions.skill = 'Vocabulary' THEN 1 ELSE 0 END) AS vocabulary,
-      SUM(CASE WHEN sessions.skill = 'Verbs' THEN 1 ELSE 0 END) AS verbs,
-      SUM(CASE WHEN sessions.skill = 'Reading' THEN 1 ELSE 0 END) AS reading,
-      SUM(CASE WHEN sessions.skill = 'Listening' THEN 1 ELSE 0 END) AS listening,
-      SUM(CASE WHEN sessions.skill = 'Writing' THEN 1 ELSE 0 END) AS writing,
-      SUM(CASE WHEN sessions.skill = 'Speaking' THEN 1 ELSE 0 END) AS speaking
-    FROM students
-    LEFT JOIN sessions ON students.studentID = sessions.studentID
-    GROUP BY students.studentID;
+    SELECT s.studentID, s.firstName, s.paternalLastName, s.maternalLastName, 
+           s.major, s.studentGroup, s.yearOfEnrollment, s.total_sessions,
+           COALESCE(SUM(CASE WHEN skill = 'Use of English' THEN skill_count ELSE 0 END), 0) AS useOfEnglish,
+           COALESCE(SUM(CASE WHEN skill = 'Vocabulary' THEN skill_count ELSE 0 END), 0) AS vocabulary,
+           COALESCE(SUM(CASE WHEN skill = 'Verbs' THEN skill_count ELSE 0 END), 0) AS verbs,
+           COALESCE(SUM(CASE WHEN skill = 'Reading' THEN skill_count ELSE 0 END), 0) AS reading,
+           COALESCE(SUM(CASE WHEN skill = 'Listening' THEN skill_count ELSE 0 END), 0) AS listening,
+           COALESCE(SUM(CASE WHEN skill = 'Writing' THEN skill_count ELSE 0 END), 0) AS writing,
+           COALESCE(SUM(CASE WHEN skill = 'Speaking' THEN skill_count ELSE 0 END), 0) AS speaking
+    FROM students s
+    LEFT JOIN sessions ss ON s.studentID = ss.studentID
+    GROUP BY s.studentID;
   `
-
   db.query(sql, (err, result) => {
     if (err) {
       console.error('Error fetching students:', err)
-      return res.status(500).json({ message: 'Error fetching students' })
+      res.status(500).json({ message: 'Error fetching students' })
+    } else {
+      res.json(result)
     }
-    res.json(result)
   })
 })
 
@@ -142,7 +140,7 @@ app.post('/log-session', (req, res) => {
       if (sessionResult.length > 0) {
         const lastSessionTime = new Date(sessionResult[0].sessionTime)
         const differenceInMinutes =
-          (currentTime - lastSessionTime) / (1000 * 60) // Convert ms to minutes
+          (currentTime - lastSessionTime) / (1000 * 60)
 
         if (differenceInMinutes < 60) {
           return res.status(403).json({
@@ -190,7 +188,8 @@ app.post('/log-session', (req, res) => {
 
             // ✅ Update total_sessions in the students table
             const updateTotalSessionsSql = `
-              UPDATE students SET total_sessions = total_sessions + 1 
+              UPDATE students 
+              SET total_sessions = total_sessions + 1 
               WHERE studentID = ?;
             `
             db.query(updateTotalSessionsSql, [studentID], (err) => {

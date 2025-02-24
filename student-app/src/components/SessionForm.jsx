@@ -106,14 +106,14 @@ const SessionForm = () => {
 
       {sessionInfo && (
         <Box sx={{ mt: 2, p: 2, border: '1px solid #ccc', borderRadius: 1 }}>
-          <Typography variant="h6">Hello there!</Typography>
-          <Typography>
-            <strong>Student:</strong>{' '}
+          <Typography variant="h6">
+            Hello {` `}
             {sessionInfo.studentName
-              .toLowerCase()
-              .split(' ')
-              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(' ')}
+              .split(' ')[0]
+              .substring(0, 1)
+              .toUpperCase() +
+              sessionInfo.studentName.split(' ')[0].substring(1)}
+            !
           </Typography>
           <Typography>
             <strong>Session Start Time:</strong> {sessionInfo.loginTime}

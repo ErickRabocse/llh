@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import * as XLSX from 'xlsx'
+import { saveAs } from 'file-saver'
 import {
   Container,
   Table,
@@ -103,20 +105,44 @@ const AdminDashboard = () => {
     }
   }
 
-  // Function to filter students based on search
-  const filteredStudents = students.filter((student) => {
-    return searchQuery
+  // Function to download table data as an Excel file
+  const handleDownloadExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(students)
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Students Data')
+
+    // Convert to Blob and download
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array',
+    })
+    const data = new Blob([excelBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    })
+    saveAs(data, 'StudentsData.xlsx')
+  }
+
+  const filteredStudents = students.filter((student) =>
+    searchQuery
       ? student.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          student.paternalLastName
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase()) ||
-          student.studentID.includes(searchQuery)
+        student.paternalLastName
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
+        student.studentID.includes(searchQuery)
       : true
-  })
+  )
 
   return (
-    <Container>
-      {/* Return Button */}
+    <Container
+      maxWidth={false}
+      sx={{
+        width: '90vw',
+        margin: 'auto',
+        marginTop: '60px',
+        paddingTop: '20px',
+      }}
+    >
+      {/* Buttons Section */}
       <Box
         sx={{
           display: 'flex',
@@ -125,6 +151,13 @@ const AdminDashboard = () => {
           mb: 3,
         }}
       >
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleDownloadExcel}
+        >
+          Download as Excel
+        </Button>
         <Typography variant="h4">Administrator Dashboard</Typography>
         <Button
           variant="contained"
@@ -174,28 +207,25 @@ const AdminDashboard = () => {
               <TableCell>
                 <strong>Total Sessions</strong>
               </TableCell>
-              <TableCell>
-                <strong>Latest Skill</strong>
-              </TableCell>
-              <TableCell>
+              <TableCell sx={{ backgroundColor: '#D6F2EF', color: '#004D40' }}>
                 <strong>Use of English</strong>
               </TableCell>
-              <TableCell>
+              <TableCell sx={{ backgroundColor: '#D6F2EF', color: '#004D40' }}>
                 <strong>Vocabulary</strong>
               </TableCell>
-              <TableCell>
+              <TableCell sx={{ backgroundColor: '#D6F2EF', color: '#004D40' }}>
                 <strong>Verbs</strong>
               </TableCell>
-              <TableCell>
+              <TableCell sx={{ backgroundColor: '#D6F2EF', color: '#004D40' }}>
                 <strong>Reading</strong>
               </TableCell>
-              <TableCell>
+              <TableCell sx={{ backgroundColor: '#D6F2EF', color: '#004D40' }}>
                 <strong>Listening</strong>
               </TableCell>
-              <TableCell>
+              <TableCell sx={{ backgroundColor: '#D6F2EF', color: '#004D40' }}>
                 <strong>Writing</strong>
               </TableCell>
-              <TableCell>
+              <TableCell sx={{ backgroundColor: '#D6F2EF', color: '#004D40' }}>
                 <strong>Speaking</strong>
               </TableCell>
               <TableCell>
@@ -213,15 +243,42 @@ const AdminDashboard = () => {
                 <TableCell>{student.major}</TableCell>
                 <TableCell>{student.studentGroup}</TableCell>
                 <TableCell>{student.yearOfEnrollment}</TableCell>
-                <TableCell>{student.totalSessions || 0}</TableCell>
-                <TableCell>{student.lastSkill || 'N/A'}</TableCell>
-                <TableCell>{student.useOfEnglish || 0}</TableCell>
-                <TableCell>{student.vocabulary || 0}</TableCell>
-                <TableCell>{student.verbs || 0}</TableCell>
-                <TableCell>{student.reading || 0}</TableCell>
-                <TableCell>{student.listening || 0}</TableCell>
-                <TableCell>{student.writing || 0}</TableCell>
-                <TableCell>{student.speaking || 0}</TableCell>
+                <TableCell>{student.total_sessions || 0}</TableCell>
+                <TableCell
+                  sx={{ backgroundColor: '#D6F2EF', color: '#004D40' }}
+                >
+                  {student.useOfEnglish || 0}
+                </TableCell>
+                <TableCell
+                  sx={{ backgroundColor: '#D6F2EF', color: '#004D40' }}
+                >
+                  {student.vocabulary || 0}
+                </TableCell>
+                <TableCell
+                  sx={{ backgroundColor: '#D6F2EF', color: '#004D40' }}
+                >
+                  {student.verbs || 0}
+                </TableCell>
+                <TableCell
+                  sx={{ backgroundColor: '#D6F2EF', color: '#004D40' }}
+                >
+                  {student.reading || 0}
+                </TableCell>
+                <TableCell
+                  sx={{ backgroundColor: '#D6F2EF', color: '#004D40' }}
+                >
+                  {student.listening || 0}
+                </TableCell>
+                <TableCell
+                  sx={{ backgroundColor: '#D6F2EF', color: '#004D40' }}
+                >
+                  {student.writing || 0}
+                </TableCell>
+                <TableCell
+                  sx={{ backgroundColor: '#D6F2EF', color: '#004D40' }}
+                >
+                  {student.speaking || 0}
+                </TableCell>
                 <TableCell>
                   <Button
                     color="primary"

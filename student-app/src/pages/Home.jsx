@@ -24,6 +24,7 @@ const Home = () => {
     } else {
       setErrorMessage('Incorrect password. Please try again.')
     }
+    setAdminPassword('') // Clears the input field
   }
 
   return (
@@ -52,7 +53,7 @@ const Home = () => {
       >
         Language Learning Hub
       </Typography>
-      <Typography variant="h5" sx={{ textAlign: 'center', mb: 4 }}>
+      <Typography variant="h3" sx={{ textAlign: 'center', mb: 4 }}>
         Welcome
       </Typography>
 
@@ -123,6 +124,7 @@ const Home = () => {
               variant="outlined"
               value={adminPassword}
               onChange={(e) => setAdminPassword(e.target.value)}
+              autoComplete="off" // Prevents auto-fill
               sx={{ mb: 3 }}
             />
             <Button
