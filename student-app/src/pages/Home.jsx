@@ -11,6 +11,7 @@ import {
 } from '@mui/material'
 import RegistrationForm from '../components/RegistrationForm'
 import SessionForm from '../components/SessionForm'
+import backgroundImage from '../img/winter1.webp' // ✅ Import Image
 
 const Home = () => {
   const [adminPassword, setAdminPassword] = useState('')
@@ -37,8 +38,16 @@ const Home = () => {
         justifyContent: 'center',
         alignItems: 'center',
         p: 3,
-        background: 'linear-gradient(135deg, #A8E6CE 30%, #56AB91 70%)', // Lighter Green Gradient
-        color: '#004D40', // Darker green for better contrast
+        // background: 'linear-gradient(135deg, #A8E6CE 30%, #56AB91 70%)', // Lighter Green Gradient
+        color: 'white', // Darker green for better contrast
+        position: 'relative', // ✅ Needed for overlay effect
+        overflow: 'hidden', // ✅ Prevents content overflow
+
+        // Background Image
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       {/* Title and Welcome Message */}
@@ -46,6 +55,7 @@ const Home = () => {
         variant="h1"
         fontWeight="bold"
         sx={{
+          fontFamily: 'Noto Sans',
           textAlign: 'center',
           mb: 1,
           fontSize: { xs: '2.5rem', md: '4rem' },
@@ -53,7 +63,10 @@ const Home = () => {
       >
         Language Learning Hub
       </Typography>
-      <Typography variant="h3" sx={{ textAlign: 'center', mb: 4 }}>
+      <Typography
+        variant="h3"
+        sx={{ textAlign: 'center', mb: 4, fontFamily: 'Noto Sans' }}
+      >
         Welcome
       </Typography>
 
@@ -70,7 +83,11 @@ const Home = () => {
               backdropFilter: 'blur(8px)',
             }}
           >
-            <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
+            <Typography
+              variant="h5"
+              fontWeight="bold"
+              sx={{ mb: 2, fontFamily: 'Noto Sans' }}
+            >
               New Registration
             </Typography>
             <RegistrationForm />
@@ -89,7 +106,11 @@ const Home = () => {
               backdropFilter: 'blur(8px)',
             }}
           >
-            <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
+            <Typography
+              variant="h5"
+              fontWeight="bold"
+              sx={{ mb: 2, fontFamily: 'Noto Sans' }}
+            >
               New Session
             </Typography>
             <SessionForm />
@@ -109,11 +130,15 @@ const Home = () => {
               backdropFilter: 'blur(8px)',
             }}
           >
-            <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
+            <Typography
+              variant="h5"
+              fontWeight="bold"
+              sx={{ mb: 2, fontFamily: 'Noto Sans' }}
+            >
               Administrator Access
             </Typography>
             {errorMessage && (
-              <Alert severity="error" sx={{ mb: 2 }}>
+              <Alert severity="error" sx={{ mb: 2, fontFamily: 'Noto Sans' }}>
                 {errorMessage}
               </Alert>
             )}

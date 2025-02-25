@@ -200,8 +200,7 @@ const RegistrationForm = () => {
           sx={{ mb: 2 }}
           autoComplete="off"
         />
-
-        <Button variant="contained" color="primary" fullWidth type="submit">
+        <Button variant="contained" color="primary" fullWidth type="submit" sxz>
           Register
         </Button>
       </form>
