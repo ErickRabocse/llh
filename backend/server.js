@@ -109,11 +109,13 @@ app.post('/log-session', (req, res) => {
   const { studentID, skill } = req.body
 
   // Verify if the student exists
-  const checkStudentSql =
-    'SELECT firstName, paternalLastName, maternalLastName FROM students WHERE studentID = ?'
+  const checkStudentSql = `
+    SELECT firstName, paternalLastName, maternalLastName 
+    FROM students WHERE studentID = ?`
+
   db.query(checkStudentSql, [studentID], (err, result) => {
     if (err) {
-      console.error('Error verifying student:', err)
+      console.error('❌ Error verifying student:', err)
       return res.status(500).json({ message: 'Internal server error' })
     }
 
@@ -126,21 +128,45 @@ app.post('/log-session', (req, res) => {
       student.maternalLastName || ''
     }`.trim()
 
-    // Check the last recorded session
-    const lastSessionSql =
-      'SELECT sessionTime FROM sessions WHERE studentID = ? ORDER BY sessionTime DESC LIMIT 1'
+    // Check the last recorded session time
+    const lastSessionSql = `
+      SELECT sessionTime FROM sessions WHERE studentID = ? 
+      ORDER BY sessionTime DESC LIMIT 1`
+
     db.query(lastSessionSql, [studentID], (err, sessionResult) => {
       if (err) {
-        console.error('Error verifying last session:', err)
+        console.error('❌ Error verifying last session:', err)
         return res.status(500).json({ message: 'Internal server error' })
       }
 
       const currentTime = new Date()
+      console.log('🕒 Current Time:', currentTime.toISOString())
 
-      if (sessionResult.length > 0) {
-        const lastSessionTime = new Date(sessionResult[0].sessionTime)
+      let lastSessionTime = null
+
+      // 🛠️ Handle First-Time Users (No previous session)
+      if (sessionResult.length === 0) {
+        console.log(
+          '🆕 First-time user, no previous session found. Allowing session.'
+        )
+      } else {
+        lastSessionTime = new Date(sessionResult[0].sessionTime)
+
+        if (isNaN(lastSessionTime.getTime())) {
+          console.error(
+            '❌ Invalid sessionTime received from DB:',
+            sessionResult[0].sessionTime
+          )
+          return res
+            .status(500)
+            .json({ message: 'Invalid session time received from server.' })
+        }
+
+        console.log('📌 Last Session Time:', lastSessionTime.toISOString())
+
         const differenceInMinutes =
           (currentTime - lastSessionTime) / (1000 * 60)
+        console.log(`⏳ Minutes since last session: ${differenceInMinutes}`)
 
         if (differenceInMinutes < 60) {
           return res.status(403).json({
@@ -148,10 +174,11 @@ app.post('/log-session', (req, res) => {
               60 - differenceInMinutes
             )} minutes before starting a new session.`,
             studentName: studentFullName,
-            loginTime: lastSessionTime.toLocaleTimeString(),
-            returnTime: new Date(
-              lastSessionTime.getTime() + 60 * 60 * 1000
-            ).toLocaleTimeString(),
+            loginTime: formatTime(lastSessionTime),
+            returnTime: formatTime(
+              new Date(lastSessionTime.getTime() + 60 * 60 * 1000)
+            ),
+            shouldDisappear: true, // ✅ Add this field to indicate that message should disappear
           })
         }
       }
@@ -165,14 +192,14 @@ app.post('/log-session', (req, res) => {
 
       db.query(checkSkillSql, [studentID, skill], (err, skillResult) => {
         if (err) {
-          console.error('Error checking skill history:', err)
+          console.error('❌ Error checking skill history:', err)
           return res
             .status(500)
             .json({ message: 'Error checking skill history' })
         }
 
         if (skillResult.length > 0) {
-          // If the student has already practiced this skill, update skill_count
+          // ✅ Update skill count if the skill has been practiced before
           const updateSkillCountSql = `
             UPDATE sessions SET skill_count = skill_count + 1 
             WHERE id = ?;
@@ -180,7 +207,7 @@ app.post('/log-session', (req, res) => {
 
           db.query(updateSkillCountSql, [skillResult[0].id], (err) => {
             if (err) {
-              console.error('Error updating skill count:', err)
+              console.error('❌ Error updating skill count:', err)
               return res
                 .status(500)
                 .json({ message: 'Error updating skill count' })
@@ -192,33 +219,36 @@ app.post('/log-session', (req, res) => {
               SET total_sessions = total_sessions + 1 
               WHERE studentID = ?;
             `
+
             db.query(updateTotalSessionsSql, [studentID], (err) => {
               if (err) {
-                console.error('Error updating total sessions:', err)
-                return res.status(500).json({
-                  message: 'Error updating total sessions',
-                })
+                console.error('❌ Error updating total sessions:', err)
+                return res
+                  .status(500)
+                  .json({ message: 'Error updating total sessions' })
               }
 
               res.status(200).json({
                 message: `Session logged, and skill "${skill}" count updated`,
                 studentName: studentFullName,
-                loginTime: new Date().toLocaleTimeString(),
-                returnTime: new Date(
-                  currentTime.getTime() + 60 * 60 * 1000
-                ).toLocaleTimeString(),
+                loginTime: formatTime(currentTime),
+                returnTime: formatTime(
+                  new Date(currentTime.getTime() + 60 * 60 * 1000)
+                ),
                 skill: skill,
                 skillCount: skillResult[0].skill_count + 1,
               })
             })
           })
         } else {
-          // If this is the first time practicing this skill, insert a new row
-          const insertSessionSql =
-            'INSERT INTO sessions (studentID, skill, skill_count) VALUES (?, ?, 1)'
+          // ✅ Insert a new session for a skill practiced for the first time
+          const insertSessionSql = `
+            INSERT INTO sessions (studentID, skill, skill_count) VALUES (?, ?, 1);
+          `
+
           db.query(insertSessionSql, [studentID, skill], (err) => {
             if (err) {
-              console.error('Error logging session:', err)
+              console.error('❌ Error logging session:', err)
               return res.status(500).json({ message: 'Error logging session' })
             }
 
@@ -227,21 +257,22 @@ app.post('/log-session', (req, res) => {
               UPDATE students SET total_sessions = total_sessions + 1 
               WHERE studentID = ?;
             `
+
             db.query(updateTotalSessionsSql, [studentID], (err) => {
               if (err) {
-                console.error('Error updating total sessions:', err)
-                return res.status(500).json({
-                  message: 'Error updating total sessions',
-                })
+                console.error('❌ Error updating total sessions:', err)
+                return res
+                  .status(500)
+                  .json({ message: 'Error updating total sessions' })
               }
 
               res.status(200).json({
                 message: 'Session successfully logged',
                 studentName: studentFullName,
-                loginTime: new Date().toLocaleTimeString(),
-                returnTime: new Date(
-                  currentTime.getTime() + 60 * 60 * 1000
-                ).toLocaleTimeString(),
+                loginTime: formatTime(currentTime),
+                returnTime: formatTime(
+                  new Date(currentTime.getTime() + 60 * 60 * 1000)
+                ),
                 skill: skill,
                 skillCount: 1,
               })
@@ -252,6 +283,30 @@ app.post('/log-session', (req, res) => {
     })
   })
 })
+
+/**
+ * ✅ Utility function to format time in 12-hour format (HH:MM AM/PM)
+ */
+function formatTime(date) {
+  let hours = date.getHours()
+  let minutes = date.getMinutes()
+  let ampm = hours >= 12 ? 'PM' : 'AM'
+  hours = hours % 12 || 12 // Convert 24h format to 12h format
+  minutes = String(minutes).padStart(2, '0') // Ensure two-digit minutes
+  return `${hours}:${minutes} ${ampm}`
+}
+
+/**
+ * ✅ Utility function to format time in 12-hour format (HH:MM AM/PM)
+ */
+function formatTime(date) {
+  let hours = date.getHours()
+  let minutes = date.getMinutes()
+  let ampm = hours >= 12 ? 'PM' : 'AM'
+  hours = hours % 12 || 12 // Convert 24h format to 12h format
+  minutes = String(minutes).padStart(2, '0') // Ensure two-digit minutes
+  return `${hours}:${minutes} ${ampm}`
+}
 
 // Route to delete a student
 app.delete('/students/:studentID', (req, res) => {

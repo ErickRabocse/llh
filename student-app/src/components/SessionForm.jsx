@@ -22,6 +22,7 @@ const SessionForm = () => {
   const handleSearch = async () => {
     if (!studentID || !skill) {
       setErrorMessage('Please enter a Student ID and select a skill.')
+      setTimeout(() => setErrorMessage(''), 4000)
       return
     }
 
@@ -31,35 +32,65 @@ const SessionForm = () => {
         skill,
       })
 
+      console.log('🔹 Server Response:', response.data)
+
       if (response.status === 200) {
         setErrorMessage('')
+
+        // Extract timestamps
+        const rawLoginTime = response.data.loginTime
+        const rawReturnTime = response.data.returnTime
+
+        const loginTime = new Date(rawLoginTime)
+        const returnTime = new Date(rawReturnTime)
+
+        const formatTime = (date) => {
+          let hours = date.getHours()
+          let minutes = date.getMinutes()
+          let ampm = hours >= 12 ? 'PM' : 'AM'
+          hours = hours % 12 || 12
+          minutes = String(minutes).padStart(2, '0')
+          return `${hours}:${minutes} ${ampm}`
+        }
+
         setSessionInfo({
           studentName: response.data.studentName,
-          loginTime: response.data.loginTime,
-          returnTime: response.data.returnTime,
+          loginTime: formatTime(loginTime),
+          returnTime: formatTime(returnTime),
           skill: response.data.skill,
         })
-        // ✅ Reset studentID after successful session log
+
         setStudentID('')
-        // ✅ Hide session info box after 5 seconds
+
+        // ✅ Both messages will disappear together after 4 seconds
         setTimeout(() => {
           setSessionInfo(null)
+          setErrorMessage('')
         }, 4000)
       }
     } catch (error) {
-      if (error.response && error.response.status === 403) {
+      console.error('❌ Session Log Error:', error)
+
+      if (error.response?.status === 403) {
         setErrorMessage(error.response.data.message)
+
+        // ✅ Restore user session details even when they need to wait
         setSessionInfo({
-          studentName: error.response.data.studentName || 'Student not found',
+          studentName: error.response.data.studentName,
           loginTime: error.response.data.loginTime,
           returnTime: error.response.data.returnTime,
           skill: skill,
         })
+
+        // ✅ Both messages will disappear together after 4 seconds
         setTimeout(() => {
           setSessionInfo(null)
+          setErrorMessage('')
         }, 4000)
       } else {
-        setErrorMessage('Error logging session.')
+        setErrorMessage(
+          error.response?.data.message || 'Error logging session.'
+        )
       }
     }
   }
@@ -117,13 +148,7 @@ const SessionForm = () => {
       {sessionInfo && (
         <Box sx={{ mt: 2, p: 2, border: '1px solid #ccc', borderRadius: 1 }}>
           <Typography variant="h6">
-            Hello {` `}
-            {sessionInfo.studentName
-              .split(' ')[0]
-              .substring(0, 1)
-              .toUpperCase() +
-              sessionInfo.studentName.split(' ')[0].substring(1)}
-            !
+            Hello {sessionInfo.studentName.split(' ')[0]}!
           </Typography>
           <Typography>
             <strong>Session Start Time:</strong> {sessionInfo.loginTime}
