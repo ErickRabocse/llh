@@ -115,7 +115,6 @@ app.post('/log-session', (req, res) => {
 
   db.query(checkStudentSql, [studentID], (err, result) => {
     if (err) {
-      console.error('❌ Error verifying student:', err)
       return res.status(500).json({ message: 'Internal server error' })
     }
 
@@ -140,7 +139,6 @@ app.post('/log-session', (req, res) => {
       }
 
       const currentTime = new Date()
-      console.log('🕒 Current Time:', currentTime.toISOString())
 
       let lastSessionTime = null
 
@@ -162,11 +160,8 @@ app.post('/log-session', (req, res) => {
             .json({ message: 'Invalid session time received from server.' })
         }
 
-        console.log('📌 Last Session Time:', lastSessionTime.toISOString())
-
         const differenceInMinutes =
           (currentTime - lastSessionTime) / (1000 * 60)
-        console.log(`⏳ Minutes since last session: ${differenceInMinutes}`)
 
         if (differenceInMinutes < 60) {
           return res.status(403).json({

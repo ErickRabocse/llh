@@ -32,25 +32,21 @@ const SessionForm = () => {
         skill,
       })
 
-      console.log('🔹 Server Response:', response.data)
-
       if (response.status === 200) {
         setErrorMessage('')
+
+        console.log('🔹 Raw loginTime from server:', response.data.loginTime)
+        console.log('🔹 Raw returnTime from server:', response.data.returnTime)
 
         // Extract timestamps
         const rawLoginTime = response.data.loginTime
         const rawReturnTime = response.data.returnTime
 
-        const loginTime = new Date(rawLoginTime)
-        const returnTime = new Date(rawReturnTime)
+        const loginTime = rawLoginTime // Use time as sent by server
+        const returnTime = rawReturnTime // Use time as sent by server
 
-        const formatTime = (date) => {
-          let hours = date.getHours()
-          let minutes = date.getMinutes()
-          let ampm = hours >= 12 ? 'PM' : 'AM'
-          hours = hours % 12 || 12
-          minutes = String(minutes).padStart(2, '0')
-          return `${hours}:${minutes} ${ampm}`
+        const formatTime = (timeString) => {
+          return timeString // ✅ Just return the time, since it's already formatted
         }
 
         setSessionInfo({
