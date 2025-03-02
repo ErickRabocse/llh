@@ -22,7 +22,7 @@ const SessionForm = () => {
   const handleSearch = async () => {
     if (!studentID || !skill) {
       setErrorMessage('Please enter a Student ID and select a skill.')
-      setTimeout(() => setErrorMessage(''), 4000)
+      setTimeout(() => setErrorMessage(''), 5000)
       return
     }
 
@@ -31,8 +31,9 @@ const SessionForm = () => {
         studentID,
         skill,
       })
-
       if (response.status === 200) {
+        console.log('🔹 Server Response:', response.data)
+
         setErrorMessage('')
 
         console.log('🔹 Raw loginTime from server:', response.data.loginTime)
@@ -54,6 +55,7 @@ const SessionForm = () => {
           loginTime: formatTime(loginTime),
           returnTime: formatTime(returnTime),
           skill: response.data.skill,
+          sessionsCompleted: response.data.sessionsCompleted, // ✅ Now correctly assigned
         })
 
         setStudentID('')
@@ -62,7 +64,7 @@ const SessionForm = () => {
         setTimeout(() => {
           setSessionInfo(null)
           setErrorMessage('')
-        }, 4000)
+        }, 5000)
       }
     } catch (error) {
       console.error('❌ Session Log Error:', error)
@@ -70,19 +72,18 @@ const SessionForm = () => {
       if (error.response?.status === 403) {
         setErrorMessage(error.response.data.message)
 
-        // ✅ Restore user session details even when they need to wait
         setSessionInfo({
           studentName: error.response.data.studentName,
           loginTime: error.response.data.loginTime,
           returnTime: error.response.data.returnTime,
           skill: skill,
+          sessionsCompleted: error.response.data.sessionsCompleted || 0, // ✅ Always display total sessions
         })
 
-        // ✅ Both messages will disappear together after 4 seconds
         setTimeout(() => {
           setSessionInfo(null)
           setErrorMessage('')
-        }, 4000)
+        }, 5000)
       } else {
         setErrorMessage(
           error.response?.data.message || 'Error logging session.'
@@ -146,6 +147,11 @@ const SessionForm = () => {
           <Typography variant="h6">
             Hello {sessionInfo.studentName.split(' ')[0]}!
           </Typography>
+          <Typography>
+            <strong>Sessions Completed:</strong>{' '}
+            {sessionInfo.sessionsCompleted || 0} ✅
+          </Typography>
+          <br />
           <Typography>
             <strong>Session Start Time:</strong> {sessionInfo.loginTime}
           </Typography>
