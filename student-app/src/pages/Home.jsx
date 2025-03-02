@@ -11,7 +11,8 @@ import {
 } from '@mui/material'
 import RegistrationForm from '../components/RegistrationForm'
 import SessionForm from '../components/SessionForm'
-import backgroundImage from '../img/winter1.webp' // ✅ Import Image
+// import backgroundImage from '../img/winter1.webp' // ✅ Import Image
+import MorphingBackground from '../components/MorphingBackground'
 
 const Home = () => {
   const [adminPassword, setAdminPassword] = useState('')
@@ -19,7 +20,7 @@ const Home = () => {
   const navigate = useNavigate()
 
   const handleAdminLogin = () => {
-    if (adminPassword === 'llh2025') {
+    if (adminPassword === 'llh25') {
       // Replace with actual authentication logic
       navigate('/admin')
     } else {
@@ -44,12 +45,15 @@ const Home = () => {
         overflow: 'hidden', // ✅ Prevents content overflow
 
         // Background Image
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
+        // backgroundImage: `url(${backgroundImage})`,
+        // backgroundSize: 'cover',
+        // backgroundPosition: 'center',
+        // backgroundRepeat: 'no-repeat',
       }}
+      // className="header finisher-header"
+      // style={{width: "100%", height: "300px"}}
     >
+      <MorphingBackground /> {/* ✅ Add background animation */}
       {/* Title and Welcome Message */}
       <Typography
         variant="h1"
@@ -69,7 +73,6 @@ const Home = () => {
       >
         Welcome
       </Typography>
-
       <Grid container spacing={3} maxWidth="1200px">
         {/* New Registration Section */}
         <Grid item xs={12} md={6}>
