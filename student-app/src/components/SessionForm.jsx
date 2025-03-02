@@ -129,9 +129,9 @@ const SessionForm = () => {
 
       <Button
         variant="contained"
-        color="primary"
         fullWidth
         onClick={handleSearch}
+        style={{ backgroundColor: '#6ba6ff', color: 'white' }}
       >
         Log a Session
       </Button>

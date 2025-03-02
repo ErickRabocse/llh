@@ -49,7 +49,6 @@ const Home = () => {
         // backgroundPosition: 'center',
         // backgroundRepeat: 'no-repeat',
       }}
-      style={{ width: '100%' }} // ✅ Removed `height: 100%` to allow scrolling
     >
       <MorphingBackground />{' '}
       {/* ✅ Keeps the animation while allowing scrolling */}
@@ -157,13 +156,14 @@ const Home = () => {
             <Button
               fullWidth
               variant="contained"
-              color="primary"
               onClick={handleAdminLogin}
               sx={{
-                py: 1.5,
+                py: 1,
                 fontSize: '1rem',
                 fontWeight: 'bold',
-                textTransform: 'none',
+                textTransform: 'uppercase',
+                backgroundColor: '#6ba6ff',
+                color: 'white',
               }}
             >
               Access
