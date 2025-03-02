@@ -33,27 +33,26 @@ const Home = () => {
     <Box
       sx={{
         flexGrow: 1,
-        minHeight: '100vh',
+        minHeight: '100vh', // ✅ Ensures full height but allows expansion
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         p: 3,
-        // background: 'linear-gradient(135deg, #A8E6CE 30%, #56AB91 70%)', // Lighter Green Gradient
-        color: 'white', // Darker green for better contrast
-        position: 'relative', // ✅ Needed for overlay effect
-        overflow: 'hidden', // ✅ Prevents content overflow
-
-        // Background Image
+        color: 'white',
+        position: 'relative',
+        overflowY: 'auto', // ✅ Allows scrolling
+        width: '100%',
+        // Background Image (Optional)
         // backgroundImage: `url(${backgroundImage})`,
         // backgroundSize: 'cover',
         // backgroundPosition: 'center',
         // backgroundRepeat: 'no-repeat',
       }}
-      // className="header finisher-header"
-      // style={{width: "100%", height: "300px"}}
+      style={{ width: '100%' }} // ✅ Removed `height: 100%` to allow scrolling
     >
-      <MorphingBackground /> {/* ✅ Add background animation */}
+      <MorphingBackground />{' '}
+      {/* ✅ Keeps the animation while allowing scrolling */}
       {/* Title and Welcome Message */}
       <Typography
         variant="h1"
