@@ -8,3 +8,19 @@ body {
   box-sizing: border-box;
   overflow-y: auto; /* ✅ Ensures scrolling */
 }
+Hide scrollbar for Chrome,
+Safari,
+and Edge ::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* Optional: make the track transparent */
+}
+
+/* Hide scrollbar for Firefox */
+html {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for IE, Edge, and older browsers */
+body {
+  -ms-overflow-style: none;
+}
