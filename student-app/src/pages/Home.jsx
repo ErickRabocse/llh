@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import RegistrationForm from '../components/RegistrationForm'
 import SessionForm from '../components/SessionForm'
-// import backgroundImage from '../img/winter1.webp' // ✅ Import Image
+import backgroundImage from '../img/cartographer.png' // ✅ Import Image
 import MorphingBackground from '../components/MorphingBackground'
 
 const Home = () => {
@@ -44,9 +44,9 @@ const Home = () => {
         overflowY: 'auto', // ✅ Allows scrolling
         width: '100%',
         // Background Image (Optional)
-        // backgroundImage: `url(${backgroundImage})`,
+        backgroundImage: `url(${backgroundImage})`,
         // backgroundSize: 'cover',
-        // backgroundPosition: 'center',
+        backgroundPosition: 'center',
         // backgroundRepeat: 'no-repeat',
       }}
     >
