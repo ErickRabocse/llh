@@ -88,13 +88,13 @@ const Home = () => {
           <Paper
             elevation={5}
             sx={{
-              p: { xs: 2, sm: 3, md: 4 }, // ✅ Adjust padding dynamically
+              p: { xs: 2, sm: 3, md: 4 },
               borderRadius: 3,
               textAlign: 'center',
               backgroundColor: 'rgba(255, 255, 255, 0.7)',
               backdropFilter: 'blur(8px)',
-              width: '100%', // ✅ Ensure no overflow
-              maxWidth: { xs: '100%', sm: '400px', md: '500px' }, // ✅ Dynamically control width
+              width: '100%', // ✅ Ensures it scales properly
+              maxWidth: { xs: '90%', sm: '400px', md: '450px' }, // ✅ Match other containers
             }}
           >
             <Typography
@@ -112,11 +112,13 @@ const Home = () => {
           <Paper
             elevation={5}
             sx={{
-              p: 4,
+              p: { xs: 2, sm: 3, md: 4 },
               borderRadius: 3,
               textAlign: 'center',
               backgroundColor: 'rgba(255, 255, 255, 0.7)',
               backdropFilter: 'blur(8px)',
+              width: '100%',
+              maxWidth: { xs: '90%', sm: '400px', md: '450px' }, // ✅ Make all widths equal
             }}
           >
             <Typography
@@ -134,12 +136,13 @@ const Home = () => {
           <Paper
             elevation={5}
             sx={{
-              p: 4,
+              p: { xs: 2, sm: 3, md: 4 },
               borderRadius: 3,
               textAlign: 'center',
-              mt: 2,
               backgroundColor: 'rgba(255, 255, 255, 0.7)',
               backdropFilter: 'blur(8px)',
+              width: '100%',
+              maxWidth: { xs: '90%', sm: '400px', md: '450px' }, // ✅ Make all widths equal
             }}
           >
             <Typography
