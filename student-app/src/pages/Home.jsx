@@ -9,6 +9,7 @@ import {
   Box,
   Alert,
 } from '@mui/material'
+
 import RegistrationForm from '../components/RegistrationForm'
 import SessionForm from '../components/SessionForm'
 import backgroundImage from '../img/cartographer.png' // ✅ Import Image
@@ -43,8 +44,8 @@ const Home = () => {
         color: 'white',
         position: 'relative',
         overflowX: 'hidden', // ✅ Prevents horizontal scrolling
-        width: '100%', // ✅ Ensures full width without overflow
-        maxWidth: '100vw', // ✅ Prevents content from going beyond the viewport
+        width: { xs: '85vw', sm: '95vw', md: '100vw' }, // ✅ Reduce width by 15% on mobile
+        maxWidth: { xs: '85%', sm: '90%', md: '100%' }, // ✅ Adjust max width dynamically
         backgroundImage: `url(${backgroundImage})`,
         backgroundPosition: 'center',
       }}
