@@ -8,24 +8,42 @@ app.use(cors())
 app.use(express.json()) // Allows us to read JSON request bodies
 
 // MySQL Database Connection
+// const db = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root', // Cambia si tienes otro usuario
+//   password: '1234', // Agrega tu contraseña aquí
+//   database: 'student_sessions',
+//   authPlugins: {
+//     mysql_clear_password: () => () => Buffer.from('1234' + '\0'),
+//   },
+//   ssl: { rejectUnauthorized: false }, // Para evitar errores SSL
+// })
+
+// db.connect((err) => {
+//   if (err) {
+//     console.error('Database connection failed:', err)
+//   } else {
+//     console.log('Connected to MySQL database!')
+//   }
+// })
+
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root', // Cambia si tienes otro usuario
-  password: '1234', // Agrega tu contraseña aquí
-  database: 'student_sessions',
-  authPlugins: {
-    mysql_clear_password: () => () => Buffer.from('1234' + '\0'),
-  },
-  ssl: { rejectUnauthorized: false }, // Para evitar errores SSL
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
 })
 
 db.connect((err) => {
   if (err) {
-    console.error('Database connection failed:', err)
-  } else {
-    console.log('Connected to MySQL database!')
+    console.error('❌ Database connection failed:', err)
+    return
   }
+  console.log('✅ Connected to AlwaysData MySQL!')
 })
+
+module.exports = db
 
 // Simple test route
 app.get('/', (req, res) => {
