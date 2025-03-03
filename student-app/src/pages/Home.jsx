@@ -44,7 +44,7 @@ const Home = () => {
         color: 'white',
         position: 'relative',
         overflowX: 'hidden', // ✅ Prevents horizontal scrolling
-        width: { xs: '85vw', sm: '95vw', md: '100vw' }, // ✅ Reduce width by 15% on mobile
+        width: '100%', // ✅ Ensures full width without overflow
         maxWidth: { xs: '85%', sm: '90%', md: '100%' }, // ✅ Adjust max width dynamically
         backgroundImage: `url(${backgroundImage})`,
         backgroundPosition: 'center',
