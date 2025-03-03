@@ -1,7 +1,6 @@
-import gsap from "gsap";
-import { useEffect } from "react";
-import "./MorphingBackground.css"; // Ensure the CSS file exists
-
+import gsap from 'gsap'
+import { useEffect } from 'react'
+import './MorphingBackground.css' // Ensure the CSS file exists
 
 const MorphingBackground = () => {
   useEffect(() => {
