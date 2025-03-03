@@ -22,7 +22,7 @@ const SessionForm = () => {
   const handleSearch = async () => {
     if (!studentID || !skill) {
       setErrorMessage('Please enter a Student ID and select a skill.')
-      setTimeout(() => setErrorMessage(''), 5000)
+      setTimeout(() => setErrorMessage(''), 6000)
       return
     }
 
@@ -35,9 +35,6 @@ const SessionForm = () => {
         console.log('🔹 Server Response:', response.data)
 
         setErrorMessage('')
-
-        console.log('🔹 Raw loginTime from server:', response.data.loginTime)
-        console.log('🔹 Raw returnTime from server:', response.data.returnTime)
 
         // Extract timestamps
         const rawLoginTime = response.data.loginTime

@@ -220,10 +220,6 @@ app.post('/log-session', (req, res) => {
                   .status(500)
                   .json({ message: 'Error fetching session count' })
               }
-
-              // ✅ Log to confirm correct data retrieval
-              console.log('🔹 Updated session count:', sessionCount)
-
               res.status(200).json({
                 message: 'Session successfully logged',
                 studentName: studentFullName,
