@@ -8,7 +8,7 @@ body {
   box-sizing: border-box;
   overflow-y: auto; /* ✅ Ensures scrolling */
   overflow-x: hidden; /* ✅ Prevents unwanted horizontal scrolling */
-  width: 100%; /* ✅ Ensures the body fits the viewport */
+  width: 100vw; /* ✅ Ensures full width */
 }
 Hide scrollbar for Chrome,
 Safari,

@@ -40,12 +40,12 @@ const Home = () => {
         justifyContent: 'center',
         alignItems: 'center',
         py: { xs: 4, sm: 6, md: 8 },
-        px: { xs: 1, sm: 2, md: 3 },
+        px: { xs: 0, sm: 2, md: 3 },
         color: 'white',
         position: 'relative',
         overflowX: 'hidden', // ✅ Prevents horizontal scrolling
-        width: '100%', // ✅ Ensures full width without overflow
-        maxWidth: { xs: '85%', sm: '90%', md: '100%' }, // ✅ Adjust max width dynamically
+        width: '100vw', // ✅ Ensures full width without overflow
+        maxWidth: '100vw', // ✅ Prevents extra spacing
         backgroundImage: `url(${backgroundImage})`,
         backgroundPosition: 'center',
       }}
