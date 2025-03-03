@@ -4,10 +4,10 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
-    minify: false, // Disable minification
+    minify: false, // You can re-enable this if needed
     rollupOptions: {
       output: {
-        manualChunks: undefined, // Disable manual chunking
+        manualChunks: undefined, // ✅ Disables code splitting to prevent the React issue
       },
     },
   },

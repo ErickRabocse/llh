@@ -33,21 +33,20 @@ const Home = () => {
     <Box
       sx={{
         flexGrow: 1,
-        minHeight: '100vh', // ✅ Ensures full height but allows expansion
+        minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        p: 3,
+        py: { xs: 4, sm: 6, md: 8 },
+        px: { xs: 1, sm: 2, md: 3 },
         color: 'white',
         position: 'relative',
-        overflowY: 'auto', // ✅ Allows scrolling
-        width: '100%',
-        // Background Image (Optional)
+        overflowX: 'hidden', // ✅ Prevents horizontal scrolling
+        width: '100%', // ✅ Ensures full width without overflow
+        maxWidth: '100vw', // ✅ Prevents content from going beyond the viewport
         backgroundImage: `url(${backgroundImage})`,
-        // backgroundSize: 'cover',
         backgroundPosition: 'center',
-        // backgroundRepeat: 'no-repeat',
       }}
     >
       <MorphingBackground />{' '}
@@ -60,28 +59,41 @@ const Home = () => {
           fontFamily: 'Noto Sans',
           textAlign: 'center',
           mb: 1,
-          fontSize: { xs: '2.5rem', md: '4rem' },
+          fontSize: { xs: '2rem', sm: '2.5rem', md: '4rem' }, // ✅ Scale text properly
         }}
       >
         Language Learning Hub
       </Typography>
       <Typography
         variant="h3"
-        sx={{ textAlign: 'center', mb: 4, fontFamily: 'Noto Sans' }}
+        sx={{
+          textAlign: 'center',
+          mb: 4,
+          fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' }, // ✅ Dynamic size
+          fontFamily: 'Noto Sans',
+        }}
       >
         Welcome
       </Typography>
-      <Grid container spacing={3} maxWidth="1200px">
+      <Grid
+        container
+        spacing={{ xs: 1, sm: 2, md: 3 }}
+        maxWidth={{ xs: 'sm', md: '1200px' }}
+      >
+        {' '}
+        {/* // ✅ Reduced maxWidth from "1200px" to "sm" */}
         {/* New Registration Section */}
         <Grid item xs={12} md={6}>
           <Paper
             elevation={5}
             sx={{
-              p: 4,
+              p: { xs: 2, sm: 3, md: 4 }, // ✅ Adjust padding dynamically
               borderRadius: 3,
               textAlign: 'center',
-              backgroundColor: 'rgba(255, 255, 255, 0.7)', // Soft white for contrast
+              backgroundColor: 'rgba(255, 255, 255, 0.7)',
               backdropFilter: 'blur(8px)',
+              width: '100%', // ✅ Ensure no overflow
+              maxWidth: { xs: '100%', sm: '400px', md: '500px' }, // ✅ Dynamically control width
             }}
           >
             <Typography
@@ -94,7 +106,6 @@ const Home = () => {
             <RegistrationForm />
           </Paper>
         </Grid>
-
         {/* New Session Section */}
         <Grid item xs={12} md={6}>
           <Paper
@@ -117,7 +128,6 @@ const Home = () => {
             <SessionForm />
           </Paper>
         </Grid>
-
         {/* Administrator Access Section (Moved Below) */}
         <Grid item xs={12}>
           <Paper
