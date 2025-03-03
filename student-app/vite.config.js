@@ -3,19 +3,11 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  optimizeDeps: {
-    include: ['react', 'react-dom'], // Ensure React is properly optimized
-  },
   build: {
-    minify: false, // Disable minification to debug the issue
+    minify: false, // Disable minification
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('react')) return 'react-vendor' // Bundle React separately
-            return 'vendor'
-          }
-        },
+        manualChunks: undefined, // Disable manual chunking
       },
     },
   },
