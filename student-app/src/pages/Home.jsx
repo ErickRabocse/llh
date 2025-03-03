@@ -40,7 +40,7 @@ const Home = () => {
         justifyContent: 'center',
         alignItems: 'center',
         py: { xs: 4, sm: 6, md: 8 },
-        px: { xs: 0, sm: 2, md: 3 },
+        px: { xs: 0.5, sm: 2, md: 3 },
         color: 'white',
         position: 'relative',
         overflowX: 'hidden', // ✅ Prevents horizontal scrolling
