@@ -11,7 +11,8 @@ const MorphingBackground = () => {
     script.onload = () => {
       gsap.to('.morphing-bg', {
         duration: 10,
-        background: 'linear-gradient(270deg, #ff6b6b, #556270, #4ecdc4)',
+        background:
+          'linear-gradient(270deg, #ff6b6b,rgb(103, 166, 233), #4ecdc4)',
         repeat: -1,
         yoyo: true,
         ease: 'power1.inOut',

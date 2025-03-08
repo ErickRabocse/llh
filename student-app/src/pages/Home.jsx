@@ -39,7 +39,7 @@ const Home = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        py: { xs: 4, sm: 6, md: 8 },
+        py: { xs: 2, sm: 3, md: 4 },
         px: { xs: 0.5, sm: 2, md: 3 },
         color: 'white',
         position: 'relative',
@@ -63,7 +63,7 @@ const Home = () => {
           fontSize: { xs: '2rem', sm: '2.5rem', md: '4rem' }, // ✅ Scale text properly
         }}
       >
-        Language Learning Hub
+        Language Learning Loft
       </Typography>
       <Typography
         variant="h3"
@@ -72,6 +72,7 @@ const Home = () => {
           mb: 4,
           fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' }, // ✅ Dynamic size
           fontFamily: 'Noto Sans',
+          textShadow: "2px 2px 5px rgba(0,0,0,0.3)"
         }}
       >
         Welcome
