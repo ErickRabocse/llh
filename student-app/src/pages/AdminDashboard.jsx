@@ -24,6 +24,9 @@ import {
 
 const AdminDashboard = () => {
   const [students, setStudents] = useState([])
+  // Additional States for Filters
+  const [yearFilter, setYearFilter] = useState('')
+  const [groupFilter, setGroupFilter] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedStudent, setSelectedStudent] = useState(null)
   const [open, setOpen] = useState(false)
@@ -122,15 +125,35 @@ const AdminDashboard = () => {
     saveAs(data, 'StudentsData.xlsx')
   }
 
-  const filteredStudents = students.filter((student) =>
-    searchQuery
+  // const filteredStudents = students.filter((student) =>
+  //   searchQuery
+  //     ? student.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       student.paternalLastName
+  //         .toLowerCase()
+  //         .includes(searchQuery.toLowerCase()) ||
+  //       student.studentID.includes(searchQuery)
+  //     : true
+  // )
+  // Update the filtering logic to include new filters
+  const filteredStudents = students.filter((student) => {
+    const matchesSearchQuery = searchQuery
       ? student.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         student.paternalLastName
           .toLowerCase()
           .includes(searchQuery.toLowerCase()) ||
         student.studentID.includes(searchQuery)
       : true
-  )
+
+    const matchesYearFilter = yearFilter
+      ? student.yearOfEnrollment.toString() === yearFilter
+      : true
+
+    const matchesGroupFilter = groupFilter
+      ? student.studentGroup.toLowerCase() === groupFilter.toLowerCase()
+      : true
+
+    return matchesSearchQuery && matchesYearFilter && matchesGroupFilter
+  })
 
   return (
     <Container
@@ -167,8 +190,16 @@ const AdminDashboard = () => {
           Return to Homepage
         </Button>
       </Box>
-
       {/* Search & Filter Controls */}
+      {/* <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
+        <TextField
+          label="Search by Name or Student ID"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          fullWidth
+        />
+      </Box> */}
+      {/* // JSX Filter Controls */}
       <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
         <TextField
           label="Search by Name or Student ID"
@@ -176,8 +207,19 @@ const AdminDashboard = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           fullWidth
         />
+        <TextField
+          label="Filter by Enrollment Year"
+          value={yearFilter}
+          onChange={(e) => setYearFilter(e.target.value)}
+          fullWidth
+        />
+        <TextField
+          label="Filter by Group"
+          value={groupFilter}
+          onChange={(e) => setGroupFilter(e.target.value)}
+          fullWidth
+        />
       </Box>
-
       {/* Students Table */}
       <TableContainer component={Paper}>
         <Table>
@@ -298,7 +340,6 @@ const AdminDashboard = () => {
           </TableBody>
         </Table>
       </TableContainer>
-
       {/* Edit Student Modal */}
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>Edit Student</DialogTitle>

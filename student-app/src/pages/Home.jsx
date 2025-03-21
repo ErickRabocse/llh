@@ -63,7 +63,7 @@ const Home = () => {
           fontSize: { xs: '2rem', sm: '2.5rem', md: '4rem' }, // ✅ Scale text properly
         }}
       >
-        Language Learning Loft
+        Language Learning Hub
       </Typography>
       <Typography
         variant="h3"
