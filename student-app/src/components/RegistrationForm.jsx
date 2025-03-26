@@ -191,7 +191,6 @@ const RegistrationForm = () => {
 
         <TextField
           fullWidth
-          type="number"
           label="Year of Enrollment"
           name="yearOfEnrollment"
           value={formData.yearOfEnrollment}
